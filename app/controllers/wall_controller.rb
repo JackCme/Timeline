@@ -3,12 +3,16 @@ class WallController < ApplicationController
 	skip_before_action :login_check, :only => [:posts]
 
   def write
+		if !cookies[:user_id].nil?
+			@current_user = User.find(cookies[:user_id])
+		end
   end
 
 	def write_complete
 		p = Post.new
 		p.name = params[:writer]
 		p.content = params[:content]
+		p.user_id = cookies[:user_id]
 
 		if p.save
 			redirect_to "/wall/posts"
@@ -20,10 +24,22 @@ class WallController < ApplicationController
 
   def posts
 		@posts = Post.all
+		if !cookies[:user_id].nil?
+			@current_user = User.find(cookies[:user_id])
+		end
   end
 
 	def edit
-		@post_edit = Post.find(params[:id])
+		p = Post.find(params[:id])
+		if !cookies[:user_id].nil?
+			if p.user_id.to_i != cookies[:user_id].to_i
+				flash[:alert] = "Cannot edit other's posts"
+				redirect_to :back
+			else
+				@post_edit = p
+			end	
+		end
+
 	end
 
 	def edit_complete
@@ -40,7 +56,15 @@ class WallController < ApplicationController
 	end
 	
 	def delete
-		@post_delete = Post.find(params[:id])
+		p = Post.find(params[:id])
+		if !cookies[:user_id].nil?
+			if p.user_id.to_i != cookies[:user_id].to_i
+				flash[:alert] = "Cannot delete other's posts"
+				redirect_to :back
+			else
+				@post_delete = p
+			end
+		end
 	end
 
 	def delete_complete
@@ -56,6 +80,10 @@ class WallController < ApplicationController
 	
 	def write_comment
 		@post_comment = Post.find(params[:id])
+
+		if !cookies[:user_id].nil?
+			@current_user = User.find(cookies[:user_id])
+		end
 	end
 
 	def write_comment_complete
@@ -63,20 +91,36 @@ class WallController < ApplicationController
 		c.post_id = params[:post_id]
 		c.name = params[:writer]
 		c.content = params[:content]
-		
+		c.user_id = cookies[:user_id]	
+
 		c.save
 
 		redirect_to "/wall/posts"
 	end
 
 	def delete_comment
-		@post_delete = Comment.find(params[:id])
+		c = Comment.find(params[:id])
+		if !cookies[:user_id].nil?
+			if c.user_id.to_i != cookies[:user_id].to_i
+				flash[:alert] = "Cannot delete other's comments"
+				redirect_to :back
+			else
+				@post_delete = c
+			end
+		end
 	end
 
 	def edit_comment
 		c = Comment.find(params[:id])
-		@comment_id = c.id
-		@post = Post.find(c.post_id)
+		if !cookies[:user_id].nil?
+			if c.user_id.to_i != cookies[:user_id].to_i
+				flash[:alert] = "Cannot edit other's comments"
+				redirect_to :back
+			else
+				@comment_id = c.id
+				@post = Post.find(c.post_id)
+			end
+		end
 	end
 
 	def delete_comment_complete

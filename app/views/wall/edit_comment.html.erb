@@ -9,7 +9,7 @@
 				<div style="background-color: #fafbfb; width: 390px; border: 1px solid #d3d6db; padding: 0px 5px 0px 5px; word-break: break-all; text-align: left;">
 				<% if comment.id == @comment_id %>
 					<input type="hidden" name="comment_id" value="<%= comment.id %>">
-					<input style="width: 100px;" type="text" name="writer"  value="<%= comment.name %>">: <input style="width: 200px;" type="text" name="content" value="<%= comment.content %>" >
+					<input style="width: 100px;" type="text" name="writer"  value="<%= comment.name %>" readonly>: <input style="width: 200px;" type="text" name="content" value="<%= comment.content %>" >
 					<input type="submit" value="Edit"> 
 				<% else %>
 					<p style="font-size: 90%; text-align: left"><span style="color: #0000ff; font-weight: bold;"><%= comment.name %></span> <%= comment.content %></p>

@@ -3,7 +3,7 @@
 	<% if cookies[:user_id].nil? %>
 	<a href="/user/signup">sign up</a> <a href="/user/login">log in</a> 
 	<% else %>
-	<p>Welcome,    <a href="/user/logout">log out</a></p>
+	<p>Welcome,<strong><%= @current_user.username %></strong> <a href="/user/logout">log out</a></p>
 	<% end %>
 </div>
 
@@ -22,7 +22,7 @@
 		<% end %>
   </div><br>
 	<% end %>
-  <a href="/wall/write">Write post again</a>
+  <a href="/wall/write">Write post</a>
 </div>
 
 <% User.all.each do |user| %>

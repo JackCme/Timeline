@@ -3,7 +3,7 @@
 <div style="background-color:#e9eaed;">
 	<h1>Write Post</h1>
 	<form action="/wall/write_complete" method="post">
-		Name: <input type="text" name="writer" placeholder="What's your name?"><br>
+		Name: <input type="text" name="writer" value="<%= @current_user.username %>" readonly ><br>
 		Content: <br>
 		<textarea name="content" cols="40" rows="5" placeholder="Write something..."></textarea>
 		<input type="submit" value="Write">

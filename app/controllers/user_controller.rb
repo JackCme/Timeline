@@ -8,8 +8,8 @@ class UserController < ApplicationController
 		if params[:password] == params[:retype_password]
 			u.password = params[:password]
 			if u.save
-				flash[:alert] = "Successfully signed up."
-				redirect_to "/wall/posts"
+				 flash[:alert] = "Successfully signed up."
+				 redirect_to "/wall/posts"
 			else
 				flash[:alert] = u.errors.values.flatten.join(' ')
 				redirect_to :back
@@ -33,7 +33,7 @@ class UserController < ApplicationController
 				flash[:alert] = "Incorrect password"
 				redirect_to :back
 			else
-				cokkies[:user_id] = u.id
+				cookies[:user_id] = u.id
 				flash[:alert] = "Successfully logged in"
 				redirect_to "/wall/posts"
 			end
