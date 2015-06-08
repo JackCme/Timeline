@@ -1,4 +1,5 @@
 Timeline::Application.routes.draw do
+  get "user/signup"
 	root "wall#posts"
   get "wall/write" => "wall#write"
   get "wall/posts" => "wall#posts"
